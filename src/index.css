@@ -2,8 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-/* CPU Scheduling Simulator Design System - Technical & Modern */
-
 @layer base {
   :root {
     --background: 240 10% 3.9%;
@@ -34,7 +32,6 @@
     --input: 240 3.7% 15.9%;
     --ring: 142 76% 36%;
 
-    /* CPU Scheduling specific colors */
     --process-1: 200 98% 39%;
     --process-2: 262 90% 50%;
     --process-3: 339 90% 51%;
@@ -44,12 +41,10 @@
     --process-7: 295 87% 54%;
     --process-8: 217 91% 60%;
 
-    /* Gradients */
     --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(142 76% 46%));
     --gradient-card: linear-gradient(145deg, hsl(240 5% 6%), hsl(240 3.7% 15.9%));
     --gradient-gantt: linear-gradient(90deg, hsl(240 10% 3.9%), hsl(240 5% 6%));
 
-    /* Animations */
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     --transition-bounce: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 
@@ -112,6 +107,12 @@
 }
 
 @layer base {
+
+  html,
+  body {
+    font-family: 'DM Sans', 'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif;
+  }
+
   * {
     @apply border-border;
   }

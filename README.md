@@ -1,73 +1,80 @@
-# Welcome to your Lovable project
+# Schedulr - The OS Concepts Simulator
 
-## Project info
+## Overview
 
-**URL**: https://lovable.dev/projects/e92eb301-60de-4e07-98c1-29a6f0a3643b
+Schedulr is an interactive web application designed to help students understand and visualize core Operating System concepts. It provides hands-on simulations and visualizations for CPU scheduling, system calls, process synchronization, page replacement, and disk scheduling algorithms. All modules run client-side with real-time visual feedback.
 
-## How can I edit this code?
+## Features
 
-There are several ways of editing your application.
+- Minimalistic and modern UI with consistent and accessible design
+- Gantt charts and process metrics for CPU scheduling
+- System call visualizer with process tree simulation
+- Classic synchronization problems (Producer-Consumer, Readers-Writers, Dining Philosophers)
+- Page replacement algorithm simulations (FIFO, LRU, LFU, Optimal)
+- Disk scheduling visualizations (FCFS, SSTF, SCAN, C-SCAN)
 
-**Use Lovable**
+## Tech Stack
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/e92eb301-60de-4e07-98c1-29a6f0a3643b) and start prompting.
+- React (TypeScript)
+- Vite
+- Tailwind CSS
+- shadcn-ui component library
 
-Changes made via Lovable will be committed automatically to this repo.
+## Getting Started
 
-**Use your preferred IDE**
+### Prerequisites
+- Node.js (v16 or higher recommended)
+- npm (v8 or higher)
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+### Installation
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+Clone the repository:
 
-Follow these steps:
+```
+git clone https://github.com/srikrishna-ps/schedulr.git
+cd schedulr
+```
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+Install dependencies:
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+```
+npm install
+```
 
-# Step 3: Install the necessary dependencies.
-npm i
+Start the development server:
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+```
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+The app will be available at `http://localhost:8080` (or as indicated in your terminal).
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+## Usage
 
-**Use GitHub Codespaces**
+- Use the navigation bar (or the "Explore Module" button of the corresponding module) to explore different OS concepts modules.
+- Each module provides interactive controls and visualizations.
+- The UI is responsive and works on desktop, tablet, and mobile devices.
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+## Deployment
 
-## What technologies are used for this project?
+You can deploy this project using any static hosting provider (e.g., Vercel, Netlify, GitHub Pages) or through the Lovable platform.
 
-This project is built with:
+To build for production:
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+```
+npm run build
+```
 
-## How can I deploy this project?
+The output will be in the `dist/` directory.
 
-Simply open [Lovable](https://lovable.dev/projects/e92eb301-60de-4e07-98c1-29a6f0a3643b) and click on Share -> Publish.
+## Contributing
 
-## Can I connect a custom domain to my Lovable project?
+Contributions are welcome! Please open an issue or submit a pull request for improvements or bug fixes.
 
-Yes, you can!
+## License
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+This project is provided for educational purposes.
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+---
+
+*Developed by SriKrishna Pejathaya P S and Nafees S*

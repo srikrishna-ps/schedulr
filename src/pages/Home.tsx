@@ -43,32 +43,36 @@ const modules = [
 
 const Home = () => {
   return (
-    <div className="space-y-8">
-      <div className="text-center space-y-4">
-        <h1 className="text-4xl font-bold text-primary">Operating Systems Concepts</h1>
+    <div className="space-y-8 max-w-7xl mx-auto px-4">
+      <div className="text-center space-y-4 mt-10 mb-10">
+        <h1 className="text-4xl font-bold text-primary">Schedulr - The OS Concepts Simulator</h1>
         <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
           Interactive simulations and visualizations to help you understand core operating system concepts.
           All algorithms run client-side with real-time visual feedback.
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="flex flex-wrap justify-center gap-8 mt-0 max-w-7xl mx-auto">
         {modules.map((module) => (
-          <Card key={module.path} className="hover:shadow-lg transition-shadow">
-            <CardHeader>
+          <Card
+            key={module.path}
+            className="group border border-border/60 shadow-md bg-background/90 backdrop-blur-md transition-all duration-150 will-change-transform hover:shadow-2xl hover:-translate-y-1 hover:scale-[1.025] hover:border-primary focus-within:border-primary max-w-sm w-full"
+            style={{ transitionTimingFunction: 'cubic-bezier(0.4,0,0.2,1)' }}
+          >
+            <CardHeader className="space-y-4">
               <div className="flex items-center space-x-3">
                 <div className="p-2 bg-primary/10 rounded-lg">
                   <module.icon className="h-6 w-6 text-primary" />
                 </div>
                 <div>
-                  <CardTitle className="text-lg">{module.title}</CardTitle>
+                  <CardTitle className="text-lg mb-0">{module.title}</CardTitle>
                 </div>
               </div>
-              <CardDescription className="text-sm">
+              <CardDescription className="text-sm mt-2 mb-0">
                 {module.description}
               </CardDescription>
             </CardHeader>
-            <CardContent className="space-y-4">
+            <CardContent className="flex flex-col space-y-4">
               <ul className="space-y-2">
                 {module.features.map((feature, index) => (
                   <li key={index} className="flex items-center space-x-2 text-sm">
@@ -88,9 +92,12 @@ const Home = () => {
         ))}
       </div>
 
-      <div className="bg-muted/50 rounded-lg p-8 text-center">
+      <div
+        className="group mt-10 max-w-7xl mx-auto border border-border/60 shadow-md bg-background/90 backdrop-blur-md rounded-2xl p-8 text-center transition-all duration-150 will-change-transform hover:shadow-2xl hover:-translate-y-1 hover:scale-[1.025] hover:border-primary focus-within:border-primary"
+        style={{ transitionTimingFunction: 'cubic-bezier(0.4,0,0.2,1)' }}
+      >
         <h2 className="text-2xl font-semibold mb-4">About This Project</h2>
-        <p className="text-muted-foreground max-w-2xl mx-auto">
+        <p className="text-muted-foreground max-w-5xl mx-auto">
           This educational tool provides hands-on experience with fundamental operating system concepts.
           Each module includes interactive simulations, step-by-step visualizations, and performance analysis
           to help you understand how these algorithms work in practice.
