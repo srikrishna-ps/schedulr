@@ -6,6 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
+import { Database } from 'lucide-react';
 
 interface PageFrame {
   page: number | null;
@@ -106,7 +107,7 @@ const PageReplacement = () => {
 
   const simulateStep = async () => {
     if (currentStep >= simulation.length) return;
-    
+
     setIsSimulating(true);
     await new Promise(resolve => setTimeout(resolve, 800));
     setCurrentStep(prev => prev + 1);
@@ -123,15 +124,22 @@ const PageReplacement = () => {
   const pageHits = currentStep - pageFaults;
 
   return (
-    <div className="space-y-6">
-      <div className="text-center space-y-2">
-        <h1 className="text-3xl font-bold text-primary">Page Replacement Algorithms</h1>
-        <p className="text-muted-foreground">
-          Simulate various page replacement strategies and analyze their performance
-        </p>
-      </div>
+    <div className="space-y-6 max-w-7xl mx-auto">
+      <Card className="bg-gradient-to-r from-primary/20 via-primary/10 to-transparent border-primary/30 mt-4">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-3 text-2xl md:text-3xl">
+            <div className="p-2 bg-primary/20 rounded-lg">
+              <Database className="w-8 h-8 text-primary" />
+            </div>
+            Page Replacement Algorithms
+          </CardTitle>
+          <p className="text-muted-foreground text-lg">
+            Simulate and analyze memory management strategies with interactive visualizations and performance metrics.
+          </p>
+        </CardHeader>
+      </Card>
 
-      <Card>
+      <Card className="group border border-border/60 shadow-md bg-background/90 backdrop-blur-md transition-all duration-150 will-change-transform hover:shadow-2xl hover:-translate-y-1 hover:scale-[1.025] hover:border-primary focus-within:border-primary">
         <CardHeader>
           <CardTitle>Configuration</CardTitle>
         </CardHeader>
@@ -181,8 +189,8 @@ const PageReplacement = () => {
             </Button>
             {simulation.length > 0 && (
               <>
-                <Button 
-                  onClick={simulateStep} 
+                <Button
+                  onClick={simulateStep}
                   disabled={isSimulating || currentStep >= simulation.length}
                 >
                   Next Step
@@ -198,7 +206,7 @@ const PageReplacement = () => {
 
       {simulation.length > 0 && (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <Card className="lg:col-span-2">
+          <Card className="group border border-border/60 shadow-md bg-background/90 backdrop-blur-md transition-all duration-150 will-change-transform hover:shadow-2xl hover:-translate-y-1 hover:scale-[1.025] hover:border-primary focus-within:border-primary lg:col-span-2">
             <CardHeader>
               <CardTitle>Memory Frames</CardTitle>
               <CardDescription>
@@ -218,18 +226,17 @@ const PageReplacement = () => {
                         {simulation.slice(0, currentStep).map((step, stepIndex) => {
                           const frame = step.frames[frameIndex];
                           const isNewPage = step.pageFault && frame.page === step.pageRequest;
-                          const wasReplaced = step.replacedPage !== undefined && 
-                            stepIndex > 0 && 
+                          const wasReplaced = step.replacedPage !== undefined &&
+                            stepIndex > 0 &&
                             simulation[stepIndex - 1].frames[frameIndex].page === step.replacedPage;
-                          
+
                           return (
                             <div
                               key={stepIndex}
-                              className={`h-8 border rounded flex items-center justify-center text-xs font-mono ${
-                                isNewPage ? 'bg-green-500/20 border-green-500' :
+                              className={`h-8 border rounded flex items-center justify-center text-xs font-mono ${isNewPage ? 'bg-green-500/20 border-green-500' :
                                 wasReplaced ? 'bg-red-500/20 border-red-500' :
-                                frame.page ? 'bg-muted border-border' : 'bg-background border-dashed border-muted-foreground/30'
-                              }`}
+                                  frame.page ? 'bg-muted border-border' : 'bg-background border-dashed border-muted-foreground/30'
+                                }`}
                             >
                               {frame.page || ''}
                             </div>
@@ -251,9 +258,8 @@ const PageReplacement = () => {
                     {simulation.slice(0, currentStep).map((step, stepIndex) => (
                       <div
                         key={stepIndex}
-                        className={`h-8 border rounded flex items-center justify-center text-xs font-mono ${
-                          step.pageFault ? 'bg-red-500/20 border-red-500' : 'bg-green-500/20 border-green-500'
-                        }`}
+                        className={`h-8 border rounded flex items-center justify-center text-xs font-mono ${step.pageFault ? 'bg-red-500/20 border-red-500' : 'bg-green-500/20 border-green-500'
+                          }`}
                       >
                         {step.pageRequest}
                       </div>
@@ -272,7 +278,7 @@ const PageReplacement = () => {
                         key={stepIndex}
                         className="h-8 flex items-center justify-center text-xs"
                       >
-                        <Badge 
+                        <Badge
                           variant={step.pageFault ? "destructive" : "default"}
                           className="text-xs px-1 py-0"
                         >
@@ -286,7 +292,7 @@ const PageReplacement = () => {
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="group border border-border/60 shadow-md bg-background/90 backdrop-blur-md transition-all duration-150 will-change-transform hover:shadow-2xl hover:-translate-y-1 hover:scale-[1.025] hover:border-primary focus-within:border-primary">
             <CardHeader>
               <CardTitle>Statistics</CardTitle>
             </CardHeader>
@@ -340,7 +346,7 @@ const PageReplacement = () => {
         </div>
       )}
 
-      <Card>
+      <Card className="group border border-border/60 shadow-md bg-background/90 backdrop-blur-md transition-all duration-150 will-change-transform hover:shadow-2xl hover:-translate-y-1 hover:scale-[1.025] hover:border-primary focus-within:border-primary">
         <CardHeader>
           <CardTitle>Algorithm Descriptions</CardTitle>
         </CardHeader>
