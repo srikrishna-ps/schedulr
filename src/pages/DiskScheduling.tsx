@@ -5,6 +5,7 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
+import { HardDrive } from 'lucide-react';
 
 interface DiskRequest {
   track: number;
@@ -31,7 +32,7 @@ const DiskScheduling = () => {
     const requestList = requests.split(',')
       .map(r => parseInt(r.trim()))
       .filter(r => !isNaN(r) && r >= 0 && r < diskSize);
-    
+
     if (requestList.length === 0) return;
 
     let sequence: number[] = [];
@@ -49,11 +50,11 @@ const DiskScheduling = () => {
       case 'SSTF':
         const remaining = [...requestList];
         sequence = [initialHead];
-        
+
         while (remaining.length > 0) {
           let minDistance = Infinity;
           let nextIndex = 0;
-          
+
           remaining.forEach((track, index) => {
             const distance = Math.abs(track - currentPos);
             if (distance < minDistance) {
@@ -61,7 +62,7 @@ const DiskScheduling = () => {
               nextIndex = index;
             }
           });
-          
+
           const nextTrack = remaining.splice(nextIndex, 1)[0];
           sequence.push(nextTrack);
           totalSeekTime += Math.abs(nextTrack - currentPos);
@@ -72,18 +73,18 @@ const DiskScheduling = () => {
       case 'SCAN':
         const sortedRequests = [...requestList].sort((a, b) => a - b);
         sequence = [initialHead];
-        
+
         if (scanDirection === 'right') {
           // Go right first
           const rightRequests = sortedRequests.filter(r => r >= initialHead);
           const leftRequests = sortedRequests.filter(r => r < initialHead).reverse();
-          
+
           rightRequests.forEach(track => {
             sequence.push(track);
             totalSeekTime += Math.abs(track - currentPos);
             currentPos = track;
           });
-          
+
           if (leftRequests.length > 0) {
             // Go to end of disk if there were right requests
             if (rightRequests.length > 0) {
@@ -91,7 +92,7 @@ const DiskScheduling = () => {
               totalSeekTime += Math.abs((diskSize - 1) - currentPos);
               currentPos = diskSize - 1;
             }
-            
+
             leftRequests.forEach(track => {
               sequence.push(track);
               totalSeekTime += Math.abs(track - currentPos);
@@ -102,13 +103,13 @@ const DiskScheduling = () => {
           // Go left first
           const leftRequests = sortedRequests.filter(r => r <= initialHead).reverse();
           const rightRequests = sortedRequests.filter(r => r > initialHead);
-          
+
           leftRequests.forEach(track => {
             sequence.push(track);
             totalSeekTime += Math.abs(track - currentPos);
             currentPos = track;
           });
-          
+
           if (rightRequests.length > 0) {
             // Go to start of disk if there were left requests
             if (leftRequests.length > 0) {
@@ -116,7 +117,7 @@ const DiskScheduling = () => {
               totalSeekTime += Math.abs(0 - currentPos);
               currentPos = 0;
             }
-            
+
             rightRequests.forEach(track => {
               sequence.push(track);
               totalSeekTime += Math.abs(track - currentPos);
@@ -129,17 +130,17 @@ const DiskScheduling = () => {
       case 'C-SCAN':
         const sortedCRequests = [...requestList].sort((a, b) => a - b);
         sequence = [initialHead];
-        
+
         if (scanDirection === 'right') {
           const rightRequests = sortedCRequests.filter(r => r >= initialHead);
           const leftRequests = sortedCRequests.filter(r => r < initialHead);
-          
+
           rightRequests.forEach(track => {
             sequence.push(track);
             totalSeekTime += Math.abs(track - currentPos);
             currentPos = track;
           });
-          
+
           if (leftRequests.length > 0) {
             // Jump to beginning
             sequence.push(diskSize - 1);
@@ -147,7 +148,7 @@ const DiskScheduling = () => {
             sequence.push(0);
             totalSeekTime += diskSize - 1;
             currentPos = 0;
-            
+
             leftRequests.forEach(track => {
               sequence.push(track);
               totalSeekTime += Math.abs(track - currentPos);
@@ -168,7 +169,7 @@ const DiskScheduling = () => {
 
   const animateStep = async () => {
     if (!result || currentStep >= result.sequence.length - 1) return;
-    
+
     setIsAnimating(true);
     await new Promise(resolve => setTimeout(resolve, 1000));
     setCurrentStep(prev => prev + 1);
@@ -191,7 +192,7 @@ const DiskScheduling = () => {
       <div className="flex justify-center p-4">
         <div className="relative" style={{ height: trackHeight + 40, width: trackWidth + 200 }}>
           {/* Disk track */}
-          <div 
+          <div
             className="absolute bg-muted border border-border rounded"
             style={{
               left: trackWidth,
@@ -220,19 +221,18 @@ const DiskScheduling = () => {
           {requests.split(',').map((req, index) => {
             const track = parseInt(req.trim());
             if (isNaN(track)) return null;
-            
+
             const y = 20 + (track / maxTrack) * (trackHeight - 20);
             const isCompleted = result.sequence.slice(1, currentStep + 1).includes(track);
             const isNext = result.sequence[currentStep + 1] === track;
-            
+
             return (
               <div
                 key={index}
-                className={`absolute w-3 h-3 rounded-full border-2 ${
-                  isCompleted ? 'bg-green-500 border-green-600' :
+                className={`absolute w-3 h-3 rounded-full border-2 ${isCompleted ? 'bg-green-500 border-green-600' :
                   isNext ? 'bg-yellow-500 border-yellow-600 animate-pulse' :
-                  'bg-blue-500 border-blue-600'
-                }`}
+                    'bg-blue-500 border-blue-600'
+                  }`}
                 style={{
                   left: trackWidth + 20 + 5,
                   top: y,
@@ -270,7 +270,7 @@ const DiskScheduling = () => {
                 const prevTrack = result.sequence[index - 1];
                 const y1 = (prevTrack / maxTrack) * (trackHeight - 20);
                 const y2 = (track / maxTrack) * (trackHeight - 20);
-                
+
                 return (
                   <line
                     key={index}
@@ -314,15 +314,22 @@ const DiskScheduling = () => {
   };
 
   return (
-    <div className="space-y-6">
-      <div className="text-center space-y-2">
-        <h1 className="text-3xl font-bold text-primary">Disk Scheduling Algorithms</h1>
-        <p className="text-muted-foreground">
-          Visualize disk head movement and optimize seek times using different scheduling strategies
-        </p>
-      </div>
+    <div className="space-y-6 max-w-7xl mx-auto">
+      <Card className="bg-gradient-to-r from-primary/20 via-primary/10 to-transparent border-primary/30 mt-4">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-3 text-2xl md:text-3xl">
+            <div className="p-2 bg-primary/20 rounded-lg">
+              <HardDrive className="w-8 h-8 text-primary" />
+            </div>
+            Disk Scheduling Algorithms
+          </CardTitle>
+          <p className="text-muted-foreground text-lg">
+            Visualize disk head movement and optimize seek times using interactive scheduling strategy simulations.
+          </p>
+        </CardHeader>
+      </Card>
 
-      <Card>
+      <Card className="group border border-border/60 shadow-md bg-background/90 backdrop-blur-md transition-all duration-150 will-change-transform hover:shadow-2xl hover:-translate-y-1 hover:scale-[1.025] hover:border-primary focus-within:border-primary">
         <CardHeader>
           <CardTitle>Configuration</CardTitle>
         </CardHeader>
@@ -399,8 +406,8 @@ const DiskScheduling = () => {
             </Button>
             {result && (
               <>
-                <Button 
-                  onClick={animateStep} 
+                <Button
+                  onClick={animateStep}
                   disabled={isAnimating || currentStep >= result.sequence.length - 1}
                 >
                   Next Step
@@ -416,7 +423,7 @@ const DiskScheduling = () => {
 
       {result && (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <Card className="lg:col-span-2">
+          <Card className="group border border-border/60 shadow-md bg-background/90 backdrop-blur-md transition-all duration-150 will-change-transform hover:shadow-2xl hover:-translate-y-1 hover:scale-[1.025] hover:border-primary focus-within:border-primary lg:col-span-2">
             <CardHeader>
               <CardTitle>Disk Visualization</CardTitle>
               <CardDescription>
@@ -429,7 +436,7 @@ const DiskScheduling = () => {
           </Card>
 
           <div className="space-y-6">
-            <Card>
+            <Card className="group border border-border/60 shadow-md bg-background/90 backdrop-blur-md transition-all duration-150 will-change-transform hover:shadow-2xl hover:-translate-y-1 hover:scale-[1.025] hover:border-primary focus-within:border-primary">
               <CardHeader>
                 <CardTitle>Statistics</CardTitle>
               </CardHeader>
@@ -455,7 +462,7 @@ const DiskScheduling = () => {
               </CardContent>
             </Card>
 
-            <Card>
+            <Card className="group border border-border/60 shadow-md bg-background/90 backdrop-blur-md transition-all duration-150 will-change-transform hover:shadow-2xl hover:-translate-y-1 hover:scale-[1.025] hover:border-primary focus-within:border-primary">
               <CardHeader>
                 <CardTitle>Seek Sequence</CardTitle>
               </CardHeader>
@@ -464,11 +471,10 @@ const DiskScheduling = () => {
                   {result.sequence.map((track, index) => (
                     <div
                       key={index}
-                      className={`flex items-center justify-between p-2 rounded ${
-                        index === currentStep ? 'bg-primary/20 border border-primary' :
+                      className={`flex items-center justify-between p-2 rounded ${index === currentStep ? 'bg-primary/20 border border-primary' :
                         index < currentStep ? 'bg-green-500/10' :
-                        'bg-muted/50'
-                      }`}
+                          'bg-muted/50'
+                        }`}
                     >
                       <span className="text-sm">
                         {index === 0 ? 'Start' : `Request ${index}`}
@@ -490,7 +496,7 @@ const DiskScheduling = () => {
         </div>
       )}
 
-      <Card>
+      <Card className="group border border-border/60 shadow-md bg-background/90 backdrop-blur-md transition-all duration-150 will-change-transform hover:shadow-2xl hover:-translate-y-1 hover:scale-[1.025] hover:border-primary focus-within:border-primary">
         <CardHeader>
           <CardTitle>Algorithm Descriptions</CardTitle>
         </CardHeader>
