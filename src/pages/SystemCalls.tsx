@@ -71,7 +71,7 @@ const SystemCalls = () => {
     setProcessTree(updateTree(processTree));
     setNextPid(nextPid + 1);
     addLog(`fork() called by PID ${selectedProcess}, created child PID ${nextPid}`);
-    
+
     // Simulate state transitions
     setTimeout(() => {
       setProcessTree(prev => updateProcessTree(prev, nextPid, { state: 'Ready' }));
@@ -84,7 +84,7 @@ const SystemCalls = () => {
     if (!process) return;
 
     const newCommand = `exec_program_${Date.now() % 1000}`;
-    setProcessTree(updateProcessTree(processTree, selectedProcess, { 
+    setProcessTree(updateProcessTree(processTree, selectedProcess, {
       command: newCommand,
       state: 'Running'
     }));
@@ -106,7 +106,7 @@ const SystemCalls = () => {
       const childPid = process.children[0].pid;
       setProcessTree(prev => updateProcessTree(prev, childPid, { state: 'Terminated' }));
       addLog(`Child process ${childPid} terminated`);
-      
+
       setTimeout(() => {
         setProcessTree(prev => updateProcessTree(prev, selectedProcess, { state: 'Running' }));
         addLog(`Process ${selectedProcess} resumed after wait()`);
@@ -144,20 +144,18 @@ const SystemCalls = () => {
 
     return (
       <div key={process.pid} className="space-y-2">
-        <div 
-          className={`flex items-center space-x-3 p-3 rounded-lg cursor-pointer transition-colors ${
-            isSelected ? 'bg-primary/20 border border-primary' : 'bg-muted/50 hover:bg-muted'
-          }`}
+        <div
+          className={`flex items-center space-x-3 p-3 rounded-lg cursor-pointer transition-colors ${isSelected ? 'bg-primary/20 border border-primary' : 'bg-muted/50 hover:bg-muted'
+            }`}
           style={{ marginLeft: `${indent}px` }}
           onClick={() => setSelectedProcess(process.pid)}
         >
-          <div className={`w-3 h-3 rounded-full ${
-            process.state === 'Running' ? 'bg-green-500' :
+          <div className={`w-3 h-3 rounded-full ${process.state === 'Running' ? 'bg-green-500' :
             process.state === 'Ready' ? 'bg-yellow-500' :
-            process.state === 'Waiting' ? 'bg-blue-500' :
-            process.state === 'Terminated' ? 'bg-red-500' :
-            'bg-gray-500'
-          }`} />
+              process.state === 'Waiting' ? 'bg-blue-500' :
+                process.state === 'Terminated' ? 'bg-red-500' :
+                  'bg-gray-500'
+            }`} />
           <div className="flex-1">
             <div className="flex items-center space-x-2">
               <span className="font-mono text-sm">PID: {process.pid}</span>
@@ -177,16 +175,23 @@ const SystemCalls = () => {
   };
 
   return (
-    <div className="space-y-6">
-      <div className="text-center space-y-2">
-        <h1 className="text-3xl font-bold text-primary">System Call Visualizer</h1>
-        <p className="text-muted-foreground">
-          Simulate system calls and visualize process tree creation and management
-        </p>
-      </div>
+    <div className="space-y-6 max-w-7xl mx-auto">
+      <Card className="bg-gradient-to-r from-primary/20 via-primary/10 to-transparent border-primary/30 mt-4">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-3 text-2xl md:text-3xl">
+            <div className="p-2 bg-primary/20 rounded-lg">
+              <GitBranch className="w-8 h-8 text-primary" />
+            </div>
+            System Call Visualizer
+          </CardTitle>
+          <p className="text-muted-foreground text-lg">
+            Simulate system calls and visualize process tree creation and management with interactive diagrams.
+          </p>
+        </CardHeader>
+      </Card>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Card className="lg:col-span-1">
+        <Card className="group border border-border/60 shadow-md bg-background/90 backdrop-blur-md transition-all duration-150 will-change-transform hover:shadow-2xl hover:-translate-y-1 hover:scale-[1.025] hover:border-primary focus-within:border-primary lg:col-span-1">
           <CardHeader>
             <CardTitle>Process Tree</CardTitle>
             <CardDescription>
@@ -223,7 +228,7 @@ const SystemCalls = () => {
         </Card>
 
         <div className="space-y-6">
-          <Card>
+          <Card className="group border border-border/60 shadow-md bg-background/90 backdrop-blur-md transition-all duration-150 will-change-transform hover:shadow-2xl hover:-translate-y-1 hover:scale-[1.025] hover:border-primary focus-within:border-primary">
             <CardHeader>
               <CardTitle>System Calls</CardTitle>
               <CardDescription>
@@ -254,7 +259,7 @@ const SystemCalls = () => {
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="group border border-border/60 shadow-md bg-background/90 backdrop-blur-md transition-all duration-150 will-change-transform hover:shadow-2xl hover:-translate-y-1 hover:scale-[1.025] hover:border-primary focus-within:border-primary">
             <CardHeader>
               <CardTitle>System Log</CardTitle>
             </CardHeader>
