@@ -52,6 +52,16 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
+				process: {
+					1: 'hsl(var(--process-1))',
+					2: 'hsl(var(--process-2))',
+					3: 'hsl(var(--process-3))',
+					4: 'hsl(var(--process-4))',
+					5: 'hsl(var(--process-5))',
+					6: 'hsl(var(--process-6))',
+					7: 'hsl(var(--process-7))',
+					8: 'hsl(var(--process-8))'
+				},
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',
 					foreground: 'hsl(var(--sidebar-foreground))',
