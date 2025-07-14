@@ -39,13 +39,13 @@ export const CPUScheduler = () => {
     }
 
     setIsCalculating(true);
-    
+
     // Add a small delay to show loading state
     await new Promise(resolve => setTimeout(resolve, 500));
 
     try {
       let schedulingResult: SchedulingResult;
-      
+
       switch (algorithm) {
         case 'FCFS':
           schedulingResult = scheduleFCFS(processes);
@@ -71,7 +71,7 @@ export const CPUScheduler = () => {
         default:
           throw new Error('Unknown algorithm');
       }
-      
+
       setResult(schedulingResult);
       toast({
         title: "Scheduling Complete",
@@ -134,45 +134,31 @@ export const CPUScheduler = () => {
         </Card>
 
         {/* Configuration Section */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <div className="lg:col-span-2">
-            <ProcessForm 
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          <div className="lg:col-span-6">
+            <ProcessForm
               processes={processes}
               onProcessesChange={setProcesses}
               needsPriority={needsPriority}
             />
           </div>
-          <div className="space-y-4">
+          <div className="flex flex-col gap-4 lg:col-span-6">
             <AlgorithmSelector
               algorithm={algorithm}
               onAlgorithmChange={setAlgorithm}
               timeQuantum={timeQuantum}
               onTimeQuantumChange={setTimeQuantum}
+              onRunScheduler={runScheduler}
+              onResetScheduler={resetScheduler}
+              isCalculating={isCalculating}
             />
-            <div className="flex gap-2">
-              <Button 
-                onClick={runScheduler} 
-                disabled={isCalculating}
-                className="flex-1 bg-primary hover:bg-primary/90"
-              >
-                <Play className="w-4 h-4 mr-2" />
-                {isCalculating ? 'Scheduling...' : 'Run Scheduler'}
-              </Button>
-              <Button 
-                onClick={resetScheduler}
-                variant="outline"
-                className="border-primary/20 hover:bg-primary/10"
-              >
-                <RotateCcw className="w-4 h-4" />
-              </Button>
-            </div>
           </div>
         </div>
 
         {/* Results Section */}
         <div className="space-y-6">
           <GanttChart executionOrder={result.executionOrder} />
-          <MetricsPanel 
+          <MetricsPanel
             processMetrics={result.processMetrics}
             averageWaitingTime={result.averageWaitingTime}
             averageTurnaroundTime={result.averageTurnaroundTime}

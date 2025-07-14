@@ -42,7 +42,7 @@ export const ProcessForm = ({ processes, onProcessesChange, needsPriority }: Pro
   };
 
   return (
-    <Card className="bg-gradient-to-br from-card to-muted/20 border-primary/20">
+    <Card className="group border border-border/60 shadow-md bg-background/90 backdrop-blur-md transition-all duration-150 will-change-transform hover:shadow-2xl hover:-translate-y-1 hover:scale-[1.025] hover:border-primary focus-within:border-primary bg-gradient-to-br from-card to-muted/20 border-primary/20">
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <div className="w-2 h-2 bg-primary rounded-full animate-pulse"></div>
@@ -51,7 +51,7 @@ export const ProcessForm = ({ processes, onProcessesChange, needsPriority }: Pro
       </CardHeader>
       <CardContent className="space-y-4">
         {processes.map((process, index) => (
-          <div key={index} className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-5 gap-4 p-4 bg-muted/10 rounded-lg border border-primary/10">
+          <div key={index} className="grid grid-cols-4 gap-4 p-4 bg-muted/10 rounded-lg border border-primary/10 items-end">
             <div>
               <Label htmlFor={`id-${index}`}>Process ID</Label>
               <Input
@@ -96,19 +96,21 @@ export const ProcessForm = ({ processes, onProcessesChange, needsPriority }: Pro
                 />
               </div>
             )}
-            <div className="flex items-end">
+            <div className="flex flex-col w-full">
+              <Label className="mb-1">Delete Process</Label>
               <Button
                 variant="destructive"
                 size="sm"
                 onClick={() => removeProcess(index)}
-                className="w-full"
+                className="w-full h-10"
+                style={{ minHeight: '2.5rem' }}
               >
                 <Trash2 className="w-4 h-4" />
               </Button>
             </div>
           </div>
         ))}
-        
+
         <Button onClick={addProcess} className="w-full bg-primary hover:bg-primary/90">
           <Plus className="w-4 h-4 mr-2" />
           Add Process

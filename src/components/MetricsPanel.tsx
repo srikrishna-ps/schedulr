@@ -9,14 +9,14 @@ interface MetricsPanelProps {
   averageTurnaroundTime: number;
 }
 
-export const MetricsPanel = ({ 
-  processMetrics, 
-  averageWaitingTime, 
-  averageTurnaroundTime 
+export const MetricsPanel = ({
+  processMetrics,
+  averageWaitingTime,
+  averageTurnaroundTime
 }: MetricsPanelProps) => {
   if (processMetrics.length === 0) {
     return (
-      <Card className="bg-gradient-to-br from-card to-accent/10 border-primary/20">
+      <Card className="group border border-border/60 shadow-md bg-background/90 backdrop-blur-md transition-all duration-150 will-change-transform hover:shadow-2xl hover:-translate-y-1 hover:scale-[1.025] hover:border-primary focus-within:border-primary bg-gradient-to-br from-card to-accent/10 border-primary/20">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <BarChart3 className="w-5 h-5 text-primary" />
@@ -33,7 +33,7 @@ export const MetricsPanel = ({
   }
 
   return (
-    <Card className="bg-gradient-to-br from-card to-accent/10 border-primary/20">
+    <Card className="group border border-border/60 shadow-md bg-background/90 backdrop-blur-md transition-all duration-150 will-change-transform hover:shadow-2xl hover:-translate-y-1 hover:scale-[1.025] hover:border-primary focus-within:border-primary bg-gradient-to-br from-card to-accent/10 border-primary/20">
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <BarChart3 className="w-5 h-5 text-primary" />
@@ -52,7 +52,7 @@ export const MetricsPanel = ({
               </div>
             </div>
           </div>
-          
+
           <div className="p-4 bg-gradient-to-br from-secondary/20 to-secondary/10 rounded-lg border border-secondary/20">
             <div className="flex items-center gap-3">
               <Timer className="w-6 h-6 text-secondary-foreground" />
@@ -80,7 +80,7 @@ export const MetricsPanel = ({
             </TableHeader>
             <TableBody>
               {processMetrics.map((process, index) => (
-                <TableRow 
+                <TableRow
                   key={process.id}
                   className="hover:bg-muted/10 animate-in fade-in duration-300"
                   style={{ animationDelay: `${index * 100}ms` }}

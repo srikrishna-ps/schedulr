@@ -24,7 +24,7 @@ export const GanttChart = ({ executionOrder }: GanttChartProps) => {
     }, {} as Record<string, string>);
 
     const maxTime = Math.max(...executionOrder.map(block => block.endTime));
-    
+
     // Create timeline blocks with proper scaling
     const blocks = executionOrder.map((block, index) => ({
       ...block,
@@ -34,16 +34,16 @@ export const GanttChart = ({ executionOrder }: GanttChartProps) => {
       delay: index * 100 // For staggered animation
     }));
 
-    return { 
-      processColorMap: colorMap, 
-      totalTime: maxTime, 
-      timelineBlocks: blocks 
+    return {
+      processColorMap: colorMap,
+      totalTime: maxTime,
+      timelineBlocks: blocks
     };
   }, [executionOrder]);
 
-  if (executionOrder.length === 0) {
+  if (!executionOrder || executionOrder.length === 0) {
     return (
-      <Card className="bg-gradient-to-br from-card to-muted/20 border-primary/20">
+      <Card className="group border border-border/60 shadow-md bg-background/90 backdrop-blur-md transition-all duration-150 will-change-transform hover:shadow-2xl hover:-translate-y-1 hover:scale-[1.025] hover:border-primary focus-within:border-primary bg-gradient-to-br from-card to-muted/20 border-primary/20">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Clock className="w-5 h-5 text-primary" />
@@ -60,7 +60,7 @@ export const GanttChart = ({ executionOrder }: GanttChartProps) => {
   }
 
   return (
-    <Card className="bg-gradient-to-br from-card to-muted/20 border-primary/20">
+    <Card className="group border border-border/60 shadow-md bg-background/90 backdrop-blur-md transition-all duration-150 will-change-transform hover:shadow-2xl hover:-translate-y-1 hover:scale-[1.025] hover:border-primary focus-within:border-primary bg-gradient-to-br from-card to-muted/20 border-primary/20">
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <Clock className="w-5 h-5 text-primary" />
@@ -86,8 +86,8 @@ export const GanttChart = ({ executionOrder }: GanttChartProps) => {
                 <div
                   key={`${block.processId}-${block.startTime}-${index}`}
                   className={`absolute top-0 h-full ${block.colorClass} border-r border-background/30 flex items-center justify-center text-white font-semibold text-sm shadow-lg animate-in slide-in-from-left-full duration-500`}
-                  style={{ 
-                    left: `${block.left}%`, 
+                  style={{
+                    left: `${block.left}%`,
                     width: `${block.width}%`,
                     animationDelay: `${block.delay}ms`
                   }}
@@ -111,7 +111,7 @@ export const GanttChart = ({ executionOrder }: GanttChartProps) => {
           {/* Execution Timeline Details */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
             {executionOrder.map((block, index) => (
-              <div 
+              <div
                 key={`${block.processId}-${block.startTime}-${index}`}
                 className="flex items-center gap-3 p-3 bg-muted/10 rounded-lg border border-primary/10 animate-in fade-in duration-300"
                 style={{ animationDelay: `${index * 50}ms` }}
