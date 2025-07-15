@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo, useEffect, useRef, useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ExecutionBlock } from '@/types/scheduler';
 import { Clock } from 'lucide-react';
@@ -16,7 +16,6 @@ export const GanttChart = ({ executionOrder }: GanttChartProps) => {
   const { processColorMap, totalTime, timelineBlocks } = useMemo(() => {
     if (executionOrder.length === 0) return { processColorMap: {}, totalTime: 0, timelineBlocks: [] };
 
-    // Create color mapping for processes
     const uniqueProcesses = Array.from(new Set(executionOrder.map(block => block.processId)));
     const colorMap = uniqueProcesses.reduce((acc, processId, index) => {
       acc[processId] = processColors[index % processColors.length];
@@ -25,13 +24,12 @@ export const GanttChart = ({ executionOrder }: GanttChartProps) => {
 
     const maxTime = Math.max(...executionOrder.map(block => block.endTime));
 
-    // Create timeline blocks with proper scaling
     const blocks = executionOrder.map((block, index) => ({
       ...block,
-      width: ((block.endTime - block.startTime) / maxTime) * 100,
-      left: (block.startTime / maxTime) * 100,
+      widthPercent: ((block.endTime - block.startTime) / maxTime) * 100,
+      leftPercent: (block.startTime / maxTime) * 100,
       colorClass: colorMap[block.processId],
-      delay: index * 100 // For staggered animation
+      delay: index * 100
     }));
 
     return {
@@ -41,9 +39,27 @@ export const GanttChart = ({ executionOrder }: GanttChartProps) => {
     };
   }, [executionOrder]);
 
+  const timelineRef = useRef<HTMLDivElement>(null);
+  const [markerSteps, setMarkerSteps] = useState<number[]>([]);
+
+  useEffect(() => {
+    if (!timelineRef.current || totalTime === 0) return;
+
+    const containerWidth = timelineRef.current.clientWidth;
+    const MIN_GAP = 40; // px per marker
+    const maxMarkers = Math.floor(containerWidth / MIN_GAP);
+    const step = Math.ceil(totalTime / maxMarkers) || 1;
+
+    const steps = [];
+    for (let i = 0; i <= totalTime; i += step) {
+      steps.push(i);
+    }
+    setMarkerSteps(steps);
+  }, [totalTime, executionOrder]);
+
   if (!executionOrder || executionOrder.length === 0) {
     return (
-      <Card className="group border border-border/60 shadow-md bg-background/90 backdrop-blur-md transition-all duration-150 will-change-transform hover:shadow-2xl hover:-translate-y-1 hover:scale-[1.025] hover:border-primary focus-within:border-primary bg-gradient-to-br from-card to-muted/20 border-primary/20">
+      <Card className="group border border-border/60 shadow-md bg-background/90 backdrop-blur-md">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Clock className="w-5 h-5 text-primary" />
@@ -60,7 +76,7 @@ export const GanttChart = ({ executionOrder }: GanttChartProps) => {
   }
 
   return (
-    <Card className="group border border-border/60 shadow-md bg-background/90 backdrop-blur-md transition-all duration-150 will-change-transform hover:shadow-2xl hover:-translate-y-1 hover:scale-[1.025] hover:border-primary focus-within:border-primary bg-gradient-to-br from-card to-muted/20 border-primary/20">
+    <Card className="group border border-border/60 shadow-md bg-background/90 backdrop-blur-md">
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <Clock className="w-5 h-5 text-primary" />
@@ -69,7 +85,7 @@ export const GanttChart = ({ executionOrder }: GanttChartProps) => {
       </CardHeader>
       <CardContent>
         <div className="space-y-6">
-          {/* Process Legend */}
+          {/* Legend */}
           <div className="flex flex-wrap gap-3">
             {Object.entries(processColorMap).map(([processId, colorClass]) => (
               <div key={processId} className="flex items-center gap-2">
@@ -80,15 +96,16 @@ export const GanttChart = ({ executionOrder }: GanttChartProps) => {
           </div>
 
           {/* Gantt Chart Timeline */}
-          <div className="relative">
-            <div className="relative h-16 bg-gradient-to-r from-muted/20 to-muted/40 rounded-lg border border-primary/20 overflow-hidden">
+          <div>
+            <div ref={timelineRef} className="relative h-16 w-full rounded-lg border border-primary/20 overflow-hidden bg-muted/30">
               {timelineBlocks.map((block, index) => (
                 <div
                   key={`${block.processId}-${block.startTime}-${index}`}
-                  className={`absolute top-0 h-full ${block.colorClass} border-r border-background/30 flex items-center justify-center text-white font-semibold text-sm shadow-lg animate-in slide-in-from-left-full duration-500`}
+                  className={`absolute top-0 h-full ${block.colorClass} border-r border-background/30 flex items-center justify-center text-white font-semibold text-sm`}
                   style={{
-                    left: `${block.left}%`,
-                    width: `${block.width}%`,
+                    left: `${block.leftPercent}%`,
+                    width: `${block.widthPercent}%`,
+                    minWidth: '24px',
                     animationDelay: `${block.delay}ms`
                   }}
                 >
@@ -98,23 +115,27 @@ export const GanttChart = ({ executionOrder }: GanttChartProps) => {
             </div>
 
             {/* Time markers */}
-            <div className="flex justify-between mt-2 text-sm text-muted-foreground">
-              {Array.from({ length: Math.min(totalTime + 1, 20) }, (_, i) => (
-                <div key={i} className="text-center">
-                  <div className="w-px h-2 bg-primary/40 mx-auto mb-1"></div>
-                  <span>{i}</span>
+            <div className="relative h-6 mt-2 w-full">
+              <div className="absolute top-1/2 left-0 right-0 h-px bg-primary/30"></div>
+              {markerSteps.map((t) => (
+                <div
+                  key={t}
+                  className="absolute flex flex-col items-center text-xs text-muted-foreground"
+                  style={{ left: `${(t / totalTime) * 100}%`, transform: 'translateX(-50%)' }}
+                >
+                  <div className="w-0.5 h-3 bg-primary/60 rounded"></div>
+                  <span className="mt-1">{t}</span>
                 </div>
               ))}
             </div>
           </div>
 
-          {/* Execution Timeline Details */}
+          {/* Execution Details */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
             {executionOrder.map((block, index) => (
               <div
                 key={`${block.processId}-${block.startTime}-${index}`}
-                className="flex items-center gap-3 p-3 bg-muted/10 rounded-lg border border-primary/10 animate-in fade-in duration-300"
-                style={{ animationDelay: `${index * 50}ms` }}
+                className="flex items-center gap-3 p-3 bg-muted/10 rounded-lg border border-primary/10"
               >
                 <div className={`w-3 h-3 rounded-full ${processColorMap[block.processId]}`}></div>
                 <div className="text-sm">
