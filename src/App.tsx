@@ -20,20 +20,24 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
-        <Layout>
-          <Routes>
+        <Routes>
+          {/* Routes WITH Layout */}
+          <Route element={<Layout />}>
             <Route path="/" element={<Home />} />
             <Route path="/cpu-scheduling" element={<CPUScheduling />} />
             <Route path="/system-calls" element={<SystemCalls />} />
             <Route path="/synchronization" element={<Synchronization />} />
             <Route path="/page-replacement" element={<PageReplacement />} />
             <Route path="/disk-scheduling" element={<DiskScheduling />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </Layout>
+          </Route>
+
+          {/* 404 Route WITHOUT Layout */}
+          <Route path="*" element={<NotFound />} />
+        </Routes>
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
 );
+
 
 export default App;
