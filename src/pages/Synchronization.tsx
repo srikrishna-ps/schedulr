@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import { Play, Pause, RotateCcw, Users, Book, UtensilsCrossed } from 'lucide-react';
+import { set } from 'date-fns';
 
 const Synchronization = () => {
   const [isRunning, setIsRunning] = useState(false);
@@ -36,6 +37,9 @@ const Synchronization = () => {
     { id: 3, state: 'thinking', leftFork: false, rightFork: false },
     { id: 4, state: 'thinking', leftFork: false, rightFork: false }
   ]);
+
+  // Dining Philosophers Fork State
+  const [forks, setForks] = useState([false, false, false, false, false]);
 
   const ProducerConsumer = () => {
     const produce = () => {
@@ -301,8 +305,8 @@ const Synchronization = () => {
     ];
 
     const pickUpForks = (philosopherId: number) => {
-      const leftFork = philosopherId;
-      const rightFork = (philosopherId + 1) % 5;
+      const leftFork = (philosopherId +4) % 5;
+      const rightFork = philosopherId;
       
       // Simple deadlock prevention: odd philosophers pick right fork first
       const firstFork = philosopherId % 2 === 0 ? leftFork : rightFork;
@@ -314,21 +318,42 @@ const Synchronization = () => {
           : p
       ));
 
-      setTimeout(() => {
-        setPhilosophers(prev => prev.map(p => 
-          p.id === philosopherId 
-            ? { ...p, state: 'eating', leftFork: true, rightFork: true }
-            : p
-        ));
+      const tryEat = () => {
+        setForks(currentForks => {
+          if (!currentForks[firstFork] && !currentForks[secondFork]) {
+            const newForks = [...currentForks];
+            newForks[firstFork] = true;
+            newForks[secondFork] = true;
 
-        setTimeout(() => {
-          setPhilosophers(prev => prev.map(p => 
-            p.id === philosopherId 
-              ? { ...p, state: 'thinking', leftFork: false, rightFork: false }
-              : p
-          ));
-        }, 3000);
-      }, 1000);
+            setPhilosophers(prev => prev.map(p => 
+              p.id === philosopherId 
+                ? { ...p, state: 'eating', leftFork: true, rightFork: true }
+                : p
+            ));
+
+            setTimeout(() => {
+              setForks(f => {
+                const releasedForks = [...f];
+                releasedForks[firstFork] = false;
+                releasedForks[secondFork] = false;
+                return releasedForks;
+              });
+
+              setPhilosophers(prev => prev.map(p => 
+                p.id === philosopherId 
+                  ? { ...p, state: 'thinking', leftFork: false, rightFork: false }
+                  : p
+              ));
+            }, 3000);
+
+            return newForks;
+          } else {
+            setTimeout(tryEat, 1000); // Retry after 1 second if forks are not available
+            return currentForks; // Return current state of forks;
+          }
+        });
+      };
+      setTimeout(tryEat, 1000); // Retry after 1 second if forks are not available
     };
 
     return (
@@ -371,10 +396,7 @@ const Synchronization = () => {
               <div
                 key={index}
                 className={`absolute w-8 h-2 rounded transform -translate-x-4 -translate-y-1 ${
-                  philosophers.some(p => 
-                    (p.id === index && p.leftFork) || 
-                    (p.id === (index + 4) % 5 && p.rightFork)
-                  ) ? 'bg-red-500' : 'bg-gray-400'
+                  forks[index] ? 'bg-red-500' : 'bg-gray-400'
                 }`}
                 style={{
                   left: `${fork.x}%`,
