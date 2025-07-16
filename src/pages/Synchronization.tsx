@@ -3,7 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
-import { Play, Pause, RotateCcw, Users, Book, UtensilsCrossed } from 'lucide-react';
+import { Play, Pause, RotateCcw, Users, Book, UtensilsCrossed, Lock } from 'lucide-react';
 import { set } from 'date-fns';
 
 const Synchronization = () => {
@@ -75,11 +75,11 @@ const Synchronization = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <Card>
-            <CardHeader>
+          <Card className="group border border-border/60 shadow-md bg-background/90 backdrop-blur-md transition-all duration-150 will-change-transform hover:shadow-2xl hover:-translate-y-1 hover:scale-[1.025] hover:border-primary focus-within:border-primary p-3">
+            <CardHeader className="p-3">
               <CardTitle className="text-lg">Semaphores</CardTitle>
             </CardHeader>
-            <CardContent className="space-y-2">
+            <CardContent className="p-3 space-y-2">
               <div className="flex justify-between">
                 <span>Empty:</span>
                 <Badge variant="outline">{semaphores.empty}</Badge>
@@ -97,18 +97,16 @@ const Synchronization = () => {
             </CardContent>
           </Card>
 
-          <Card>
-            <CardHeader>
+          <Card className="group border border-border/60 shadow-md bg-background/90 backdrop-blur-md transition-all duration-150 will-change-transform hover:shadow-2xl hover:-translate-y-1 hover:scale-[1.025] hover:border-primary focus-within:border-primary p-3">
+            <CardHeader className="p-3">
               <CardTitle className="text-lg">Buffer</CardTitle>
             </CardHeader>
-            <CardContent>
+            <CardContent className="p-3">
               <div className="grid grid-cols-5 gap-2 mb-4">
                 {Array.from({ length: bufferSize }, (_, i) => (
                   <div
                     key={i}
-                    className={`h-12 border-2 border-dashed rounded flex items-center justify-center text-sm ${
-                      buffer[i] !== undefined ? 'bg-primary/20 border-primary' : 'border-muted-foreground/30'
-                    }`}
+                    className={`w-10 h-10 border-2 border-dashed rounded flex items-center justify-center text-sm ${buffer[i] !== undefined ? 'bg-primary/20 border-primary' : 'border-muted-foreground/30'}`}
                   >
                     {buffer[i] || ''}
                   </div>
@@ -120,11 +118,11 @@ const Synchronization = () => {
             </CardContent>
           </Card>
 
-          <Card>
-            <CardHeader>
+          <Card className="group border border-border/60 shadow-md bg-background/90 backdrop-blur-md transition-all duration-150 will-change-transform hover:shadow-2xl hover:-translate-y-1 hover:scale-[1.025] hover:border-primary focus-within:border-primary p-3">
+            <CardHeader className="p-3">
               <CardTitle className="text-lg">Statistics</CardTitle>
             </CardHeader>
-            <CardContent className="space-y-2">
+            <CardContent className="p-3 space-y-2">
               <div className="flex justify-between">
                 <span>Produced:</span>
                 <Badge>{produced}</Badge>
@@ -213,14 +211,14 @@ const Synchronization = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <Card>
-            <CardHeader>
+          <Card className="group border border-border/60 shadow-md bg-background/90 backdrop-blur-md transition-all duration-150 will-change-transform hover:shadow-2xl hover:-translate-y-1 hover:scale-[1.025] hover:border-primary focus-within:border-primary p-3">
+            <CardHeader className="p-3">
               <CardTitle className="flex items-center space-x-2">
                 <Book className="h-5 w-5" />
                 <span>Readers</span>
               </CardTitle>
             </CardHeader>
-            <CardContent className="space-y-4">
+            <CardContent className="p-3 space-y-4">
               <div className="text-center">
                 <div className="text-3xl font-bold text-blue-500">{readers}</div>
                 <div className="text-sm text-muted-foreground">Active Readers</div>
@@ -236,14 +234,14 @@ const Synchronization = () => {
             </CardContent>
           </Card>
 
-          <Card>
-            <CardHeader>
+          <Card className="group border border-border/60 shadow-md bg-background/90 backdrop-blur-md transition-all duration-150 will-change-transform hover:shadow-2xl hover:-translate-y-1 hover:scale-[1.025] hover:border-primary focus-within:border-primary p-3">
+            <CardHeader className="p-3">
               <CardTitle className="flex items-center space-x-2">
                 <Users className="h-5 w-5" />
                 <span>Writers</span>
               </CardTitle>
             </CardHeader>
-            <CardContent className="space-y-4">
+            <CardContent className="p-3 space-y-4">
               <div className="text-center">
                 <div className="text-3xl font-bold text-red-500">{writers}</div>
                 <div className="text-sm text-muted-foreground">Active Writers</div>
@@ -260,11 +258,11 @@ const Synchronization = () => {
           </Card>
         </div>
 
-        <Card>
-          <CardHeader>
+        <Card className="group border border-border/60 shadow-md bg-background/90 backdrop-blur-md transition-all duration-150 will-change-transform hover:shadow-2xl hover:-translate-y-1 hover:scale-[1.025] hover:border-primary focus-within:border-primary p-3">
+          <CardHeader className="p-3">
             <CardTitle>Semaphore Status</CardTitle>
           </CardHeader>
-          <CardContent className="space-y-2">
+          <CardContent className="p-3 space-y-2">
             <div className="flex justify-between">
               <span>RW Mutex (Resource):</span>
               <Badge variant={rwSemaphores.rw_mutex ? "default" : "destructive"}>
@@ -305,15 +303,15 @@ const Synchronization = () => {
     ];
 
     const pickUpForks = (philosopherId: number) => {
-      const leftFork = (philosopherId +4) % 5;
+      const leftFork = (philosopherId + 4) % 5;
       const rightFork = philosopherId;
-      
+
       // Simple deadlock prevention: odd philosophers pick right fork first
       const firstFork = philosopherId % 2 === 0 ? leftFork : rightFork;
       const secondFork = philosopherId % 2 === 0 ? rightFork : leftFork;
 
-      setPhilosophers(prev => prev.map(p => 
-        p.id === philosopherId 
+      setPhilosophers(prev => prev.map(p =>
+        p.id === philosopherId
           ? { ...p, state: 'hungry' }
           : p
       ));
@@ -325,8 +323,8 @@ const Synchronization = () => {
             newForks[firstFork] = true;
             newForks[secondFork] = true;
 
-            setPhilosophers(prev => prev.map(p => 
-              p.id === philosopherId 
+            setPhilosophers(prev => prev.map(p =>
+              p.id === philosopherId
                 ? { ...p, state: 'eating', leftFork: true, rightFork: true }
                 : p
             ));
@@ -339,8 +337,8 @@ const Synchronization = () => {
                 return releasedForks;
               });
 
-              setPhilosophers(prev => prev.map(p => 
-                p.id === philosopherId 
+              setPhilosophers(prev => prev.map(p =>
+                p.id === philosopherId
                   ? { ...p, state: 'thinking', leftFork: false, rightFork: false }
                   : p
               ));
@@ -376,11 +374,10 @@ const Synchronization = () => {
             {philosophers.map((philosopher, index) => (
               <div
                 key={philosopher.id}
-                className={`absolute w-16 h-16 rounded-full border-2 flex items-center justify-center text-xs font-bold cursor-pointer transform -translate-x-8 -translate-y-8 ${
-                  philosopher.state === 'thinking' ? 'bg-blue-500 border-blue-600 text-white' :
+                className={`absolute w-16 h-16 rounded-full border-2 flex items-center justify-center text-xs font-bold cursor-pointer transform -translate-x-8 -translate-y-8 ${philosopher.state === 'thinking' ? 'bg-blue-500 border-blue-600 text-white' :
                   philosopher.state === 'hungry' ? 'bg-yellow-500 border-yellow-600 text-white' :
-                  'bg-green-500 border-green-600 text-white'
-                }`}
+                    'bg-green-500 border-green-600 text-white'
+                  }`}
                 style={{
                   left: `${positions[index].x}%`,
                   top: `${positions[index].y}%`
@@ -395,9 +392,8 @@ const Synchronization = () => {
             {forkPositions.map((fork, index) => (
               <div
                 key={index}
-                className={`absolute w-8 h-2 rounded transform -translate-x-4 -translate-y-1 ${
-                  forks[index] ? 'bg-red-500' : 'bg-gray-400'
-                }`}
+                className={`absolute w-8 h-2 rounded transform -translate-x-4 -translate-y-1 ${forks[index] ? 'bg-red-500' : 'bg-gray-400'
+                  }`}
                 style={{
                   left: `${fork.x}%`,
                   top: `${fork.y}%`,
@@ -415,11 +411,11 @@ const Synchronization = () => {
                 <CardTitle className="text-sm">P{philosopher.id}</CardTitle>
               </CardHeader>
               <CardContent className="pt-0">
-                <Badge 
+                <Badge
                   variant={
                     philosopher.state === 'thinking' ? 'default' :
-                    philosopher.state === 'hungry' ? 'secondary' :
-                    'destructive'
+                      philosopher.state === 'hungry' ? 'secondary' :
+                        'destructive'
                   }
                   className="text-xs"
                 >
@@ -438,33 +434,57 @@ const Synchronization = () => {
   };
 
   return (
-    <div className="space-y-6">
-      <div className="text-center space-y-2">
-        <h1 className="text-3xl font-bold text-primary">Process Synchronization</h1>
-        <p className="text-muted-foreground">
-          Explore classic synchronization problems and semaphore-based solutions
-        </p>
+    <div className="max-w-7xl mx-auto">
+      <div className="space-y-6">
+        <Card className="bg-gradient-to-r from-primary/20 via-primary/10 to-transparent border-primary/30 mt-4">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-3 text-2xl md:text-3xl">
+              <div className="p-2 bg-primary/20 rounded-lg">
+                <Lock className="w-8 h-8 text-primary" />
+              </div>
+              Process Synchronization
+            </CardTitle>
+            <p className="text-muted-foreground text-lg">
+              Explore classic synchronization problems and semaphore-based solutions
+            </p>
+          </CardHeader>
+        </Card>
+
+        <Tabs defaultValue="producer-consumer" className="space-y-6">
+          <TabsList className="flex w-full justify-center gap-2 bg-background/90 border border-border/60 shadow-md rounded-xl h-16 p-0">
+            <TabsTrigger value="producer-consumer" className="relative flex-1 h-full px-6 py-3 text-lg font-bold text-muted-foreground transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 data-[state=active]:text-primary group flex items-center justify-center">
+              <span className="relative inline-block">
+                Producer-Consumer
+                <span className="absolute left-0 -bottom-1 h-0.5 w-0 bg-primary rounded transition-all duration-300 group-hover:w-full data-[state=active]:w-full"></span>
+              </span>
+            </TabsTrigger>
+            <TabsTrigger value="readers-writers" className="relative flex-1 h-full px-6 py-3 text-lg font-bold text-muted-foreground transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 data-[state=active]:text-primary group flex items-center justify-center">
+              <span className="relative inline-block">
+                Readers-Writers
+                <span className="absolute left-0 -bottom-1 h-0.5 w-0 bg-primary rounded transition-all duration-300 group-hover:w-full data-[state=active]:w-full"></span>
+              </span>
+            </TabsTrigger>
+            <TabsTrigger value="dining-philosophers" className="relative flex-1 h-full px-6 py-3 text-lg font-bold text-muted-foreground transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 data-[state=active]:text-primary group flex items-center justify-center">
+              <span className="relative inline-block">
+                Dining Philosophers
+                <span className="absolute left-0 -bottom-1 h-0.5 w-0 bg-primary rounded transition-all duration-300 group-hover:w-full data-[state=active]:w-full"></span>
+              </span>
+            </TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="producer-consumer">
+            <ProducerConsumer />
+          </TabsContent>
+
+          <TabsContent value="readers-writers">
+            <ReadersWriters />
+          </TabsContent>
+
+          <TabsContent value="dining-philosophers">
+            <DiningPhilosophers />
+          </TabsContent>
+        </Tabs>
       </div>
-
-      <Tabs defaultValue="producer-consumer" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-3">
-          <TabsTrigger value="producer-consumer">Producer-Consumer</TabsTrigger>
-          <TabsTrigger value="readers-writers">Readers-Writers</TabsTrigger>
-          <TabsTrigger value="dining-philosophers">Dining Philosophers</TabsTrigger>
-        </TabsList>
-
-        <TabsContent value="producer-consumer">
-          <ProducerConsumer />
-        </TabsContent>
-
-        <TabsContent value="readers-writers">
-          <ReadersWriters />
-        </TabsContent>
-
-        <TabsContent value="dining-philosophers">
-          <DiningPhilosophers />
-        </TabsContent>
-      </Tabs>
     </div>
   );
 };
