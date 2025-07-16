@@ -29,8 +29,10 @@ const PageReplacement = () => {
   const [simulation, setSimulation] = useState<SimulationStep[]>([]);
   const [isSimulating, setIsSimulating] = useState(false);
   const [currentStep, setCurrentStep] = useState(0);
+  const [inputsLocked, setInputsLocked] = useState(false);
 
   const runSimulation = () => {
+    setInputsLocked(true);
     const pages = pageSequence.split(',').map(p => parseInt(p.trim())).filter(p => !isNaN(p));
     if (pages.length === 0 || frameCount < 1) return;
 
@@ -118,6 +120,7 @@ const PageReplacement = () => {
     setSimulation([]);
     setCurrentStep(0);
     setIsSimulating(false);
+    setInputsLocked(false);
   };
 
   const pageFaults = simulation.slice(0, currentStep).filter(s => s.pageFault).length;
@@ -147,7 +150,7 @@ const PageReplacement = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="space-y-2">
               <Label htmlFor="algorithm">Algorithm</Label>
-              <Select value={algorithm} onValueChange={(value: any) => setAlgorithm(value)}>
+              <Select value={algorithm} onValueChange={(value: any) => setAlgorithm(value)} disabled={inputsLocked}>
                 <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>
@@ -169,6 +172,7 @@ const PageReplacement = () => {
                 max="10"
                 value={frameCount}
                 onChange={(e) => setFrameCount(parseInt(e.target.value) || 1)}
+                disabled={inputsLocked}
               />
             </div>
 
@@ -179,6 +183,7 @@ const PageReplacement = () => {
                 placeholder="1,2,3,4,1,2,5"
                 value={pageSequence}
                 onChange={(e) => setPageSequence(e.target.value)}
+                disabled={inputsLocked}
               />
             </div>
           </div>
