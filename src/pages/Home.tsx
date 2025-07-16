@@ -43,7 +43,7 @@ const modules = [
 
 const Home = () => {
   return (
-    <div className="space-y-8 max-w-7xl mx-auto px-4">
+    <div className="space-y-8 max-w-7xl mx-auto">
       <div className="text-center space-y-4 mt-10 mb-10">
         <h1 className="text-4xl font-bold text-primary">Schedulr - The OS Concepts Simulator</h1>
         <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
