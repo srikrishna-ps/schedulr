@@ -68,12 +68,12 @@ export const Navigation = () => {
             return (
               <Link key={item.path} to={item.path}>
                 <Button
-                  variant={isActive ? 'default' : 'ghost'}
-                  className={`flex items-center gap-2 px-4 py-2 text-lg rounded-lg font-medium min-w-0 whitespace-nowrap bg-transparent relative group transition-none ${isActive ? '' : 'hover:bg-transparent focus:bg-transparent'}`}
+                  variant={'ghost'}
+                  className={`flex items-center gap-2 px-4 py-2 text-lg rounded-lg font-medium min-w-0 whitespace-nowrap bg-transparent relative group transition-none hover:bg-transparent focus:bg-transparent active:bg-transparent`}
                   style={{ fontFamily: 'inherit' }}
                 >
                   <item.icon className="h-5 w-5" />
-                  <span className="inline text-ellipsis overflow-hidden whitespace-nowrap relative after:content-[''] after:block after:h-[3px] after:rounded-full after:bg-primary after:scale-x-0 after:transition-transform after:duration-200 after:ease-in-out after:origin-left group-hover:after:scale-x-100 group-focus:after:scale-x-100">
+                  <span className={`inline text-ellipsis overflow-hidden whitespace-nowrap relative after:content-[''] after:block after:h-[3px] after:rounded-full after:bg-primary after:scale-x-0 after:transition-transform after:duration-200 after:ease-in-out after:origin-left group-hover:after:scale-x-100 group-focus:after:scale-x-100 ${isActive ? 'text-primary' : ''} group-hover:text-primary group-focus:text-primary`}>
                     {item.name}
                   </span>
                 </Button>
