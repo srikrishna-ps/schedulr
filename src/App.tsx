@@ -22,7 +22,7 @@ function App() {
         <TooltipProvider>
           <Toaster />
           <Sonner />
-          <BrowserRouter>
+          <BrowserRouter basename="/schedulr">
             <Routes>
               <Route element={<Layout />}>
                 <Route path="/" element={<Home />} />
@@ -41,7 +41,6 @@ function App() {
       {/* Footer */}
       <footer className="max-w-7xl mx-auto mb-6 rounded-2xl border border-border/60 shadow-md bg-background/90 backdrop-blur-md">
         <div className="px-4 py-6 flex flex-col md:flex-row items-center justify-between gap-4">
-          {/* Contribute*/}
           <div className="flex items-center gap-2 text-muted-foreground text-sm">
             <Github className="w-5 h-5 text-primary" />
             <span>Contribute on</span>
@@ -54,7 +53,6 @@ function App() {
               GitHub
             </a>
           </div>
-          {/* Team*/}
           <div className="flex flex-col md:flex-row items-center gap-2 md:gap-6">
             <span className="flex items-center gap-1 text-muted-foreground text-sm">
               <Github className="w-4 h-4" />
