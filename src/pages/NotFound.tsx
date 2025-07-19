@@ -15,7 +15,7 @@ const NotFound = () => {
     <div className="min-h-screen flex items-center justify-center bg-black-100">
       <div className="text-center">
         <img
-          src="../images/error_icon.png"
+          src="/schedulr/error_icon.png"
           alt="Page Not Found"
           className="w-1/4 mb-6 mx-auto"
         />
