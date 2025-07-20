@@ -25,7 +25,7 @@ const NotFound = () => {
           The page you are looking for does not exist or has been moved.<br />
           Please check the URL or return to the home page.
         </p>
-        <a href="/" className="text-green-500 hover:text-blue-700 underline">
+        <a href="/schedulr/" className="text-green-500 hover:text-blue-700 underline">
           Return to Home
         </a>
       </div>
