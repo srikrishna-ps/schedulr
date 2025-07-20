@@ -24,6 +24,9 @@ Schedulr is an interactive web application designed to help students understand 
 - **Multi-Process Scheduling**  
   Implementing multi-process scheduling for better CPU utilization and efficient concurrent task handling visualization.
 
+- **Memory Allocation Algorithms**    
+  Implemention of First Fit, Best Fit and Wirst Fit memory allocation algorithms and it's visualization.
+
 
 ## Tech Stack
 
