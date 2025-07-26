@@ -20,7 +20,7 @@ const modules = [
   },
   {
     title: 'Process Synchronization',
-    description: 'Explore semaphore-based solutions to classic synchronization problems with visual animations.',
+    description: 'Explore semaphore-based solutions to classic synchronization problems with real time visual animations.',
     icon: Lock,
     path: '/synchronization',
     features: ['Producer-Consumer Problem', 'Readers-Writers Problem', 'Dining Philosophers', 'Semaphore Operations']

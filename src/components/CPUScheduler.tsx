@@ -6,11 +6,14 @@ import { MetricsPanel } from './MetricsPanel';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Process, SchedulingAlgorithm, SchedulingResult } from '@/types/scheduler';
-import { scheduleFCFS, scheduleSJF, schedulePriority, scheduleRoundRobin } from '@/utils/schedulingAlgorithms';
+import { scheduleFCFS, scheduleSJF, schedulePriority, scheduleRoundRobin, scheduleSRTF, schedulePriorityPreemptive } from '@/utils/schedulingAlgorithms';
 import { Play, RotateCcw, Cpu } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 
+
+
 export const CPUScheduler = () => {
+  const [reversePriority, setReversePriority] = useState(false);
   const [processes, setProcesses] = useState<Process[]>([
     { id: 'P1', arrivalTime: 0, burstTime: 4, priority: 2 },
     { id: 'P2', arrivalTime: 1, burstTime: 3, priority: 1 },
@@ -26,7 +29,7 @@ export const CPUScheduler = () => {
   });
   const [isCalculating, setIsCalculating] = useState(false);
 
-  const needsPriority = algorithm === 'Priority';
+  const needsPriority = algorithm === 'Priority' || algorithm === 'PriorityP';
 
   const runScheduler = async () => {
     if (processes.length === 0) {
@@ -53,6 +56,9 @@ export const CPUScheduler = () => {
         case 'SJF':
           schedulingResult = scheduleSJF(processes);
           break;
+        case 'SRTF':
+          schedulingResult = scheduleSRTF(processes);
+          break;
         case 'Priority':
           if (processes.some(p => p.priority === undefined)) {
             toast({
@@ -63,7 +69,19 @@ export const CPUScheduler = () => {
             setIsCalculating(false);
             return;
           }
-          schedulingResult = schedulePriority(processes);
+          schedulingResult = schedulePriority(processes, reversePriority);
+          break;
+        case 'PriorityP':
+          if (processes.some(p => p.priority === undefined)) {
+            toast({
+              title: "Missing Priority",
+              description: "Please set priority for all processes when using Preemptive Priority Scheduling.",
+              variant: "destructive"
+            });
+            setIsCalculating(false);
+            return;
+          }
+          schedulingResult = schedulePriorityPreemptive(processes, reversePriority);
           break;
         case 'RoundRobin':
           schedulingResult = scheduleRoundRobin(processes, timeQuantum);
@@ -108,12 +126,15 @@ export const CPUScheduler = () => {
     });
   };
 
-  // Auto-run when algorithm or time quantum changes (if processes exist)
   useEffect(() => {
-    if (processes.length > 0 && result.executionOrder.length > 0) {
-      runScheduler();
-    }
-  }, [algorithm, timeQuantum]);
+    setResult({
+      executionOrder: [],
+      processMetrics: [],
+      averageWaitingTime: 0,
+      averageTurnaroundTime: 0,
+    });
+  }, [algorithm, timeQuantum, reversePriority]);
+  
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20 p-4">
@@ -151,6 +172,8 @@ export const CPUScheduler = () => {
               onRunScheduler={runScheduler}
               onResetScheduler={resetScheduler}
               isCalculating={isCalculating}
+              reversePriority={reversePriority}
+              onReversePriorityChange={setReversePriority}
             />
           </div>
         </div>

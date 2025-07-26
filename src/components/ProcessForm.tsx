@@ -16,15 +16,30 @@ export const ProcessForm = ({ processes, onProcessesChange, needsPriority }: Pro
   const [nextId, setNextId] = useState(1);
 
   const addProcess = () => {
+    const usedNumbers = processes
+      .map((p) => parseInt(p.id.replace('P', '')))
+      .filter((n) => !isNaN(n))
+      .sort((a, b) => a - b);
+
+    let newId = 1;
+    for (let i = 0; i < usedNumbers.length; i++) {
+      if (usedNumbers[i] !== i + 1) {
+        newId = i + 1;
+        break;
+      }
+      newId = usedNumbers.length + 1;
+    }
+
     const newProcess: Process = {
-      id: `P${nextId}`,
+      id: `P${newId}`,
       arrivalTime: 0,
       burstTime: 1,
       priority: needsPriority ? 1 : undefined,
     };
+
     onProcessesChange([...processes, newProcess]);
-    setNextId(nextId + 1);
   };
+
 
   const removeProcess = (index: number) => {
     const updatedProcesses = processes.filter((_, i) => i !== index);

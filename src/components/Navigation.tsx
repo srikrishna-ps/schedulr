@@ -49,7 +49,7 @@ export const Navigation = () => {
 						'DM Sans, Segoe UI, Helvetica Neue, Arial, Liberation Sans, sans-serif',
 				}}
 			>
-				<div className="mx-auto w-full max-w-7xl px-2 sm:px-4 md:px-8">
+				<div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
 					<div className="rounded-2xl bg-background shadow-2xl py-3 md:py-4 px-2 sm:px-4 md:px-8 flex items-center justify-between backdrop-blur-lg border border-border/40 supports-[backdrop-filter]:bg-background/80 transition-all duration-300 w-full">
 						{/* Left - Logo + Hamburger */}
 						<div className="flex items-center gap-4 sm:gap-6 flex-shrink-0 min-w-0">

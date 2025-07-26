@@ -82,7 +82,64 @@ export const scheduleSJF = (processes: Process[]): SchedulingResult => {
   return calculateAverages(executionOrder, processMetrics);
 };
 
-export const schedulePriority = (processes: Process[]): SchedulingResult => {
+export const scheduleSRTF = (processes: Process[]): SchedulingResult => {
+  const remainingProcesses = processes.map(p => ({
+    ...p,
+    remainingTime: p.burstTime
+  }));
+
+  const executionOrder: ExecutionBlock[] = [];
+  const processMetrics: ProcessMetrics[] = [];
+  const completedProcesses: Set<string> = new Set();
+  let currentTime = 0;
+
+  while (completedProcesses.size < processes.length) {
+    // Get available processes at current time
+    const availableProcesses = remainingProcesses.filter(
+      p => p.arrivalTime <= currentTime && !completedProcesses.has(p.id)
+    );
+
+    if (availableProcesses.length === 0) {
+      currentTime++; // Idle time
+      continue;
+    }
+
+    // Pick the process with the shortest remaining time
+    const nextProcess = availableProcesses.reduce((min, curr) =>
+      curr.remainingTime < min.remainingTime ? curr : min
+    );
+
+    // Run for 1 unit of time
+    const startTime = currentTime;
+    const endTime = startTime + 1;
+
+    executionOrder.push({
+      processId: nextProcess.id,
+      startTime,
+      endTime
+    });
+
+    nextProcess.remainingTime -= 1;
+    currentTime++;
+
+    if (nextProcess.remainingTime === 0) {
+      completedProcesses.add(nextProcess.id);
+
+      processMetrics.push({
+        id: nextProcess.id,
+        arrivalTime: nextProcess.arrivalTime,
+        burstTime: nextProcess.burstTime,
+        completionTime: currentTime,
+        turnaroundTime: currentTime - nextProcess.arrivalTime,
+        waitingTime: currentTime - nextProcess.arrivalTime - nextProcess.burstTime,
+        priority: nextProcess.priority
+      });
+    }
+  }
+  return calculateAverages(executionOrder, processMetrics);
+}
+
+export const schedulePriority = (processes: Process[], reversePriority: boolean): SchedulingResult => {
   const remainingProcesses = [...processes].map(p => ({ ...p, remainingTime: p.burstTime }));
   const executionOrder: ExecutionBlock[] = [];
   const processMetrics: ProcessMetrics[] = [];
@@ -99,14 +156,18 @@ export const schedulePriority = (processes: Process[]): SchedulingResult => {
       currentTime++;
       continue;
     }
-    
-    // Find highest priority (lowest number)
-    const highestPriority = availableProcesses.reduce((min, current) => {
-      const minPriority = min.priority ?? Infinity;
-      const currentPriority = current.priority ?? Infinity;
-      return currentPriority < minPriority ? current : min;
+
+    // Sort based on priority direction
+    availableProcesses.sort((a, b) => {
+      if (reversePriority) {
+        return (b.priority ?? -Infinity) - (a.priority ?? -Infinity);
+      } else {
+        return (a.priority ?? Infinity) - (b.priority ?? Infinity);
+      }
     });
-    
+
+    const highestPriority = availableProcesses[0];
+
     const startTime = currentTime;
     const endTime = startTime + highestPriority.burstTime;
     
@@ -129,7 +190,63 @@ export const schedulePriority = (processes: Process[]): SchedulingResult => {
     completedProcesses.add(highestPriority.id);
     currentTime = endTime;
   }
-  
+
+  return calculateAverages(executionOrder, processMetrics);
+};
+
+export const schedulePriorityPreemptive = (processes: Process[], reversePriority: boolean): SchedulingResult => {
+  const remainingProcesses = [...processes].map(p => ({ ...p, remainingTime: p.burstTime }));
+  const executionOrder: ExecutionBlock[] = [];
+  const processMetrics: ProcessMetrics[] = [];
+  const completedProcesses: Set<string> = new Set();
+
+  let currentTime = 0;
+
+  while (completedProcesses.size < processes.length) {
+    const availableProcesses = remainingProcesses.filter(
+      p => p.arrivalTime <= currentTime && !completedProcesses.has(p.id)
+    );
+
+    if (availableProcesses.length === 0) {
+      currentTime++; // CPU idle
+      continue;
+    }
+
+    // Sort based on priority direction
+    availableProcesses.sort((a, b) => {
+      if (reversePriority) {
+        return (b.priority ?? -Infinity) - (a.priority ?? -Infinity);
+      } else {
+        return (a.priority ?? Infinity) - (b.priority ?? Infinity);
+      }
+    });
+
+    const currentProcess = availableProcesses[0];
+
+    executionOrder.push({
+      processId: currentProcess.id,
+      startTime: currentTime,
+      endTime: currentTime + 1
+    });
+
+    currentProcess.remainingTime -= 1;
+    currentTime++;
+
+    if (currentProcess.remainingTime === 0) {
+      completedProcesses.add(currentProcess.id);
+
+      processMetrics.push({
+        id: currentProcess.id,
+        arrivalTime: currentProcess.arrivalTime,
+        burstTime: currentProcess.burstTime,
+        completionTime: currentTime,
+        turnaroundTime: currentTime - currentProcess.arrivalTime,
+        waitingTime: currentTime - currentProcess.arrivalTime - currentProcess.burstTime,
+        priority: currentProcess.priority
+      });
+    }
+  }
+
   return calculateAverages(executionOrder, processMetrics);
 };
 

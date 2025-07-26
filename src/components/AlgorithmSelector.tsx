@@ -15,6 +15,8 @@ interface AlgorithmSelectorProps {
   onRunScheduler: () => void;
   onResetScheduler: () => void;
   isCalculating: boolean;
+  reversePriority: boolean;
+  onReversePriorityChange: (value: boolean) => void;
 }
 
 export const AlgorithmSelector = ({
@@ -24,7 +26,9 @@ export const AlgorithmSelector = ({
   onTimeQuantumChange,
   onRunScheduler,
   onResetScheduler,
-  isCalculating
+  isCalculating,
+  reversePriority,
+  onReversePriorityChange
 }: AlgorithmSelectorProps) => {
   return (
     <Card className="group border border-border/60 shadow-md bg-background/90 backdrop-blur-md transition-all duration-150 will-change-transform hover:shadow-2xl hover:-translate-y-1 hover:scale-[1.025] hover:border-primary focus-within:border-primary bg-gradient-to-br from-card to-accent/10 border-primary/20">
@@ -44,7 +48,9 @@ export const AlgorithmSelector = ({
             <SelectContent className="bg-popover border-border">
               <SelectItem value="FCFS">First Come First Serve (FCFS)</SelectItem>
               <SelectItem value="SJF">Shortest Job First (SJF)</SelectItem>
+              <SelectItem value="SRTF">Shortest Remaining Time First (SRTF)</SelectItem>
               <SelectItem value="Priority">Priority Scheduling</SelectItem>
+              <SelectItem value="PriorityP">Priority Scheduling (Preemptive)</SelectItem>
               <SelectItem value="RoundRobin">Round Robin</SelectItem>
             </SelectContent>
           </Select>
@@ -63,11 +69,34 @@ export const AlgorithmSelector = ({
             />
           </div>
         )}
+        {(algorithm === 'Priority' || algorithm === 'PriorityP') && (
+          <div className="flex items-center justify-between group relative">
+            <Label className="text-sm">
+              {reversePriority
+                ? "High number = High Priority"
+                : "Low number = High Priority"}
+            </Label>
+
+            {/* Toggle Switch */}
+            <button
+              onClick={() => onReversePriorityChange(!reversePriority)}
+              className={`w-9 h-5 rounded-full relative transition-colors duration-300 ease-in-out
+                ${reversePriority ? 'bg-green-500' : 'bg-red-500'}`}
+            >
+              <span
+                className={`absolute w-4 h-4 bg-white rounded-full top-0.5 left-0.5 shadow-md transform transition-transform duration-300 ease-in-out
+                  ${reversePriority ? 'translate-x-4' : 'translate-x-0'}`}
+              />
+            </button>
+          </div>
+        )}
 
         <div className="text-sm text-muted-foreground p-3 bg-muted/20 rounded-lg border border-primary/10">
           {algorithm === 'FCFS' && "Executes processes in order of arrival time."}
           {algorithm === 'SJF' && "Executes shortest burst time process first (non-preemptive)."}
+          {algorithm === 'SRTF' && "Executes shortest remaining time process first (SJF preemptive)."}
           {algorithm === 'Priority' && "Executes highest priority process first (lower number = higher priority)."}
+          {algorithm === 'PriorityP' && "Executes highest priority process first, preempting if a higher priority process arrives."}
           {algorithm === 'RoundRobin' && "Each process gets equal time slices in cyclic manner."}
         </div>
         <div className="flex gap-2 pt-2">

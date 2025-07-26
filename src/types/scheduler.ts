@@ -29,4 +29,4 @@ export interface SchedulingResult {
   averageTurnaroundTime: number;
 }
 
-export type SchedulingAlgorithm = 'FCFS' | 'SJF' | 'Priority' | 'RoundRobin';
+export type SchedulingAlgorithm = 'FCFS' | 'SJF' | 'SRTF' | 'Priority' | 'PriorityP' | 'RoundRobin';
