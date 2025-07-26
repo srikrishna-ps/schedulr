@@ -50,8 +50,9 @@ export const LegendToggle = () => {
       </div>
 
       {/* Desktop: always show legend */}
-      <div className="hidden sm:flex justify-end mt-2">
+      <div className="hidden sm:flex justify-end px-5 mt-2">
         <div className="text-xs space-y-2">
+            <p className="text-sm font-semibold mb-1">Legend</p>
             <div className="flex items-center gap-2">
             <div className="w-3 h-3 bg-blue-500 border border-blue-600 rounded-full" />
             <span>Pending Request</span>
