@@ -200,6 +200,14 @@ const PageReplacement = () => {
                 >
                   Next Step
                 </Button>
+                <Button
+                  variant="outline"
+                  onClick={() => setCurrentStep(simulation.length)}
+                  disabled={simulation.length === 0}
+                >
+                  Skip to Result
+                </Button>
+
                 <Button variant="outline" onClick={resetSimulation}>
                   Reset
                 </Button>

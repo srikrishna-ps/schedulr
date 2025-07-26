@@ -430,6 +430,12 @@ const DiskScheduling = () => {
                 >
                   Next Step
                 </Button>
+                <Button variant="outline"
+                  onClick={() => setCurrentStep(result.sequence.length - 1)}
+                  disabled={isAnimating || currentStep >= result.sequence.length - 1}
+                >
+                  Skip to Result
+                </Button>
                 <Button variant="outline" onClick={resetAnimation}>
                   Reset Animation
                 </Button>
