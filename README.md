@@ -13,11 +13,17 @@ Schedulr is an interactive web application designed to help students understand 
 - Page replacement algorithm simulations (FIFO, LRU, LFU, Optimal)
 - Disk scheduling visualizations (FCFS, SSTF, SCAN, C-SCAN)
 
-## Future updates
-
+##Current updates
 - **Preemptive Scheduling Support**  
   Adding preemptive algorithms to enhance task prioritization and system responsiveness.
 
+- **Mobile View Friendly**  
+  improved UI for scalability and bug fixes.
+
+- **Buttons!**  
+  Skip to Result and Previous Step buttons added to Page Replacement and Disk Scheduling
+
+## Future updates
 - **Real-Time Scheduling Algorithms (RTOS)**  
   Introducing algorithms like Rate Monotonic (RM) and Earliest Deadline First (EDF) for real-time task management.
 
