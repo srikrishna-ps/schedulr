@@ -6,6 +6,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
 import { HardDrive } from 'lucide-react';
+import { LegendToggle } from "@/components/LegendToggle";
+
 
 interface DiskRequest {
   track: number;
@@ -28,6 +30,7 @@ const DiskScheduling = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const [selectedTrack, setSelectedTrack] = useState<number | null>(null);
   const [inputsLocked, setInputsLocked] = useState(false);
+  
 
   const simulateScheduling = () => {
     setInputsLocked(true);
@@ -418,7 +421,7 @@ const DiskScheduling = () => {
             />
           </div>
 
-          <div className="flex space-x-2">
+          <div className="flex flex-wrap gap-2">
             <Button onClick={simulateScheduling} disabled={inputsLocked}>
               Generate Schedule
             </Button>
@@ -429,6 +432,14 @@ const DiskScheduling = () => {
                   disabled={isAnimating || currentStep >= result.sequence.length - 1}
                 >
                   Next Step
+                </Button>
+                {/*button for step back*/}
+                <Button
+                  variant="outline"
+                  onClick={() => setCurrentStep(prev => Math.max(0, prev - 1))}
+                  disabled={isAnimating || currentStep <= 0}
+                >
+                  Previous Step
                 </Button>
                 <Button variant="outline"
                   onClick={() => setCurrentStep(result.sequence.length - 1)}
@@ -456,28 +467,7 @@ const DiskScheduling = () => {
             </CardHeader>
             <CardContent className="flex flex-row items-start justify-between w-full">
               <div>{renderDiskVisualization()}</div>
-              <div className="mt-4">
-                <div className="space-y-2 text-xs">
-                  <div className="flex items-center space-x-2">
-                    <div className="w-3 h-3 bg-blue-500 border border-blue-600 rounded-full" />
-                    <span>Pending Request</span>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <div className="w-3 h-3 bg-yellow-500 border border-yellow-600 rounded-full" />
-                    <span>Next Request</span>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <div className="w-3 h-3 bg-green-500 border border-green-600 rounded-full" />
-                    <span>Completed</span>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <div className="w-0 h-0 border-l-[6px] border-r-[6px] border-b-[8px] border-l-transparent border-r-transparent border-b-red-500" 
-                      style={{ transform: 'rotate(90deg)' }}
-                    />
-                    <span>Disk Head</span>
-                  </div>
-                </div>
-              </div>
+              <LegendToggle />
             </CardContent>
           </Card>
 

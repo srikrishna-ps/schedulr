@@ -188,8 +188,8 @@ const PageReplacement = () => {
             </div>
           </div>
 
-          <div className="flex space-x-2">
-            <Button onClick={runSimulation}>
+          <div className="flex flex-wrap gap-2">
+            <Button onClick={runSimulation} size="sm" disabled={inputsLocked || isSimulating}>
               Generate Simulation
             </Button>
             {simulation.length > 0 && (
@@ -197,18 +197,31 @@ const PageReplacement = () => {
                 <Button
                   onClick={simulateStep}
                   disabled={isSimulating || currentStep >= simulation.length}
+                  size="sm"
                 >
                   Next Step
                 </Button>
                 <Button
                   variant="outline"
+                  onClick={() => setCurrentStep(prev => Math.max(0, prev - 1))}
+                  disabled={currentStep <= 0}
+                  size="sm"
+                >
+                  Previous Step
+                </Button>
+                <Button
+                  variant="outline"
                   onClick={() => setCurrentStep(simulation.length)}
                   disabled={simulation.length === 0}
+                  size="sm"
                 >
                   Skip to Result
                 </Button>
-
-                <Button variant="outline" onClick={resetSimulation}>
+                <Button
+                  variant="outline"
+                  onClick={resetSimulation}
+                  size="sm"
+                >
                   Reset
                 </Button>
               </>
