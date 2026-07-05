@@ -10,6 +10,8 @@ import SystemCalls from "./pages/SystemCalls";
 import Synchronization from "./pages/Synchronization";
 import PageReplacement from "./pages/PageReplacement";
 import DiskScheduling from "./pages/DiskScheduling";
+import MemoryAllocation from "./pages/MemoryAllocation";
+import RealTimeScheduling from "./pages/RealTimeScheduling";
 import NotFound from "./pages/NotFound";
 import { Github, Linkedin, Heart } from 'lucide-react';
 
@@ -31,6 +33,8 @@ function App() {
                 <Route path="/synchronization" element={<Synchronization />} />
                 <Route path="/page-replacement" element={<PageReplacement />} />
                 <Route path="/disk-scheduling" element={<DiskScheduling />} />
+                <Route path="/memory-allocation" element={<MemoryAllocation />} />
+                <Route path="/real-time-scheduling" element={<RealTimeScheduling />} />
               </Route>
 
               <Route path="*" element={<NotFound />} />

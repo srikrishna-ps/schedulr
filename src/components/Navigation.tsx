@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { Menu, X, Cpu, GitBranch, Lock, HardDrive, Database } from 'lucide-react';
+import { Menu, X, Cpu, GitBranch, Lock, HardDrive, Database, MemoryStick, Timer } from 'lucide-react';
 const navItems = [
 	{
 		path: '/cpu-scheduling',
@@ -33,6 +33,18 @@ const navItems = [
 		name: 'Disk Scheduling',
 		icon: HardDrive,
 		description: 'FCFS, SSTF, SCAN algorithms',
+	},
+	{
+		path: '/memory-allocation',
+		name: 'Memory Allocation',
+		icon: MemoryStick,
+		description: 'First, Best, Worst Fit',
+	},
+	{
+		path: '/real-time-scheduling',
+		name: 'Real-Time',
+		icon: Timer,
+		description: 'Rate Monotonic & EDF',
 	},
 ];
 
@@ -70,16 +82,16 @@ export const Navigation = () => {
 						</div>
 
 						{/* Right - Navigation Links */}
-						<div className="hidden xl:flex items-center gap-2 sm:gap-3 md:gap-4 min-w-0">
+						<div className="hidden xl:flex items-center gap-0.5 min-w-0">
 							{navItems.map((item) => {
 								const isActive = location.pathname === item.path;
 								return (
 									<Link key={item.path} to={item.path}>
 										<Button
 											variant="ghost"
-											className="flex items-center gap-2 px-3 sm:px-4 py-2 text-base md:text-lg rounded-lg font-medium min-w-0 whitespace-nowrap bg-transparent relative group hover:bg-transparent focus:bg-transparent active:bg-transparent transition-none"
+											className="flex items-center gap-1.5 px-1.5 py-2 text-sm 2xl:text-base rounded-lg font-medium min-w-0 whitespace-nowrap bg-transparent relative group hover:bg-transparent focus:bg-transparent active:bg-transparent transition-none"
 										>
-											<item.icon className="h-5 w-5" />
+											<item.icon className="h-4 w-4" />
 											<span
 												className={`relative inline overflow-hidden text-ellipsis after:block after:h-[3px] after:rounded-full after:scale-x-0 after:transition-transform after:duration-200 after:ease-in-out after:origin-left group-hover:after:scale-x-100 group-focus:after:scale-x-100 ${
 													isActive

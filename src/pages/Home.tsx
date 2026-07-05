@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Cpu, GitBranch, Lock, Database, HardDrive, ArrowRight } from 'lucide-react';
+import { Cpu, GitBranch, Lock, Database, HardDrive, MemoryStick, Timer, ArrowRight } from 'lucide-react';
 
 const modules = [
   {
@@ -38,6 +38,20 @@ const modules = [
     icon: HardDrive,
     path: '/disk-scheduling',
     features: ['FCFS Scheduling', 'SSTF Algorithm', 'SCAN Algorithm', 'Seek Time Analysis']
+  },
+  {
+    title: 'Memory Allocation',
+    description: 'Simulate contiguous memory allocation strategies and analyze fragmentation and memory utilization.',
+    icon: MemoryStick,
+    path: '/memory-allocation',
+    features: ['First Fit Allocation', 'Best Fit Allocation', 'Worst Fit Allocation', 'Fragmentation Analysis']
+  },
+  {
+    title: 'Real-Time Scheduling',
+    description: 'Schedule periodic tasks with real-time algorithms and compare Rate Monotonic against EDF over the hyperperiod.',
+    icon: Timer,
+    path: '/real-time-scheduling',
+    features: ['Rate Monotonic (RM)', 'Earliest Deadline First (EDF)', 'Deadline Miss Detection', 'Utilization Bound Test']
   }
 ];
 
